@@ -178,102 +178,113 @@ func (r *bookRepo) GetByID(ctx context.Context, req *models.BookPrimeryKey) (*mo
 	return book, nil
 }
 
-// func GetListBook(db *sql.DB, req models.GetListBookRequest) (models.GetListBookResponse, error) {
+func (r *bookRepo) GetList(ctx context.Context, req *models.GetListBookRequest) (*models.GetListBookResponse, error) {
 
-// 	var (
-// 		resp   models.GetListBookResponse
-// 		offset = " OFFSET 0"
-// 		limit  = " LIMIT 10"
-// 	)
+	var (
+		resp   models.GetListBookResponse
+		offset = " OFFSET 0"
+		limit  = " LIMIT 10"
+	)
 
-// 	query := `
-// 		SELECT
-// 			COUNT(*) OVER(),
-// 			id,
-// 			name,
-// 			price,
-// 			description,
-// 			created_at,
-// 			updated_at
-// 		FROM books
-// 	`
+	query := `
+		SELECT
+			COUNT(*) OVER(),
+			id,
+			name,
+			price,
+			description,
+			created_at,
+			updated_at  
+		FROM books
+	`
 
-// 	if req.Offset > 0 {
-// 		offset = fmt.Sprintf(" OFFSET %d", req.Offset)
-// 	}
+	if req.Offset > 0 {
+		offset = fmt.Sprintf(" OFFSET %d", req.Offset)
+	}
 
-// 	if req.Limit > 0 {
-// 		limit = fmt.Sprintf(" LIMIT %d", req.Limit)
-// 	}
+	if req.Limit > 0 {
+		limit = fmt.Sprintf(" LIMIT %d", req.Limit)
+	}
 
-// 	query += offset + limit
+	query += offset + limit
+	rows, err := r.db.Query(ctx, query)
+	if err != nil {
+		return &models.GetListBookResponse{}, err
+	}
+	var (
+		id          sql.NullString
+		name        sql.NullString
+		price       sql.NullFloat64
+		description sql.NullString
+		createdAt   sql.NullString
+		updatedAt   sql.NullString
+	)
 
-// 	rows, err := db.Query(query)
-// 	if err != nil {
-// 		return models.GetListBookResponse{}, err
-// 	}
+	for rows.Next() {
 
-// 	for rows.Next() {
-// 		var book models.Book
+		err = rows.Scan(
+			&resp.Count,
+			&id,
+			&name,
+			&price,
+			&description,
+			&createdAt,
+			&updatedAt,
+		)
+		book := models.Book{
+			Id:          id.String,
+			Name:        name.String,
+			Price:       price.Float64,
+			Description: description.String,
+			CreatedAt:   createdAt.String,
+			UpdatedAt:   updatedAt.String,
+		}
+		if err != nil {
+			return &models.GetListBookResponse{}, err
+		}
 
-// 		err = rows.Scan(
-// 			&resp.Count,
-// 			&book.Id,
-// 			&book.Name,
-// 			&book.Price,
-// 			&book.Description,
-// 			&book.CreatedAt,
-// 			&book.UpdatedAt,
-// 		)
+		resp.Books = append(resp.Books, &book)
 
-// 		if err != nil {
-// 			return models.GetListBookResponse{}, err
-// 		}
+	}
+	return &resp, nil
+}
 
-// 		resp.Books = append(resp.Books, book)
-// 	}
+func (r *bookRepo) Update(ctx context.Context, book *models.UpdateBook) error {
+	query := `
+		UPDATE 
+			books 
+		SET 
+			name = $2,
+			price = $3,
+			description = $4,
+			updated_at = now()
+		WHERE id = $1
+	`
 
-// 	return resp, nil
-// }
+	_, err := r.db.Exec(ctx, query,
+		book.Id,
+		book.Name,
+		book.Price,
+		book.Description,
+	)
 
-// func UpdateBook(db *sql.DB, book models.UpdateBook) (int64, error) {
+	if err != nil {
+		return err
+	}
 
-// 	query := `
-// 	UPDATE
-// 		books
-// 	SET
-// 		name = $2,
-// 		price = $3,
-// 		description = $4,
-// 		updated_at = now()
-// 	WHERE id = $1
-// `
+	return nil
+}
 
-// 	result, err := db.Exec(query,
-// 		book.Id,
-// 		book.Name,
-// 		book.Price,
-// 		book.Description,
-// 	)
+func (r *bookRepo) Delete(ctx context.Context, req *models.BookPrimeryKey) error {
+	_, err := r.db.Exec(ctx, "DELETE FROM book_category WHERE books_id  = $1 ", req.Id)
+	if err != nil {
+		return err
+	}
+	_, err = r.db.Exec(ctx, "DELETE FROM books WHERE id = $1", req.Id)
 
-// 	if err != nil {
-// 		return 0, err
-// 	}
+	if err != nil {
+		return err
+	}
 
-// 	rowsAffected, err := result.RowsAffected()
-// 	if err != nil {
-// 		return 0, err
-// 	}
-
-// 	return rowsAffected, nil
-// }
-
-// func DeleteBook(db *sql.DB, req models.BookPrimeryKey) error {
-// 	_, err := db.Exec("DELETE FROM books WHERE id = $1", req.Id)
-
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	return nil
-// }
+	return nil
+}
