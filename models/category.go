@@ -1,14 +1,15 @@
 package models
 
-type CategoryPrimarKey struct {
-	Id string `json:"category_id"`
+type CategoryPrimeryKey struct {
+	Id string `json:"id"`
 }
 
 type CreateCategory struct {
 	Name string `json:"name"`
 }
+
 type Category struct {
-	Id        string `json:"category_id"`
+	Id        string `json:"id"`
 	Name      string `json:"name"`
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
@@ -24,13 +25,11 @@ type UpdateCategorySwag struct {
 }
 
 type GetListCategoryRequest struct {
-	Limit  int64
-	Offset int64
+	Offset int64 `json:"offset"`
+	Limit  int64 `json:"limit"`
 }
 
 type GetListCategoryResponse struct {
-	Count     int32      `json:"count"`
-	Categorys []Category `json:"categorys"`
+	Count      int64       `json:"count"`
+	Categories []*Category `json:"categories"`
 }
-
-type Empty struct{}

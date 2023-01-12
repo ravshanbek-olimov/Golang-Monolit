@@ -5,24 +5,30 @@ type BookPrimeryKey struct {
 }
 
 type CreateBook struct {
-	Name        string  `json:"name"`
-	Price       float64 `json:"price"`
-	Description string  `json:"description"`
-	CreatedAt   string  `json:"created_at"`
-	UpdatedAt   string  `json:"updated_at"`
+	Name        string   `json:"name"`
+	Price       float64  `json:"price"`
+	Description string   `json:"description"`
+	CategoryIds []string `json:"category_ids"`
 }
 
 type Book struct {
-	Id          string  `json:"id"`
-	Name        string  `json:"name"`
-	Price       float64 `json:"price"`
-	Description string  `json:"description"`
-	CreatedAt   string  `json:"created_at"`
-	UpdatedAt   string  `json:"updated_at"`
+	Id          string      `json:"id"`
+	Name        string      `json:"name"`
+	Price       float64     `json:"price"`
+	Description string      `json:"description"`
+	CreatedAt   string      `json:"created_at"`
+	UpdatedAt   string      `json:"updated_at"`
+	Categories  []*Category `json:"categories"`
 }
 
 type UpdateBook struct {
 	Id          string  `json:"id"`
+	Name        string  `json:"name"`
+	Price       float64 `json:"price"`
+	Description string  `json:"description"`
+}
+
+type UpdateBookSwag struct {
 	Name        string  `json:"name"`
 	Price       float64 `json:"price"`
 	Description string  `json:"description"`
@@ -34,12 +40,8 @@ type GetListBookRequest struct {
 }
 
 type GetListBookResponse struct {
-	Count int64  `json:"count"`
-	Books []Book `json:"books"`
+	Count int64   `json:"count"`
+	Books []*Book `json:"books"`
 }
 
-type UpdateBookSwag struct {
-	Name        string  `json:"name"`
-	Price       float64 `json:"price"`
-	Description string  `json:"description"`
-}
+type Empty struct{}

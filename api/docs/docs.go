@@ -17,56 +17,8 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/book": {
-            "get": {
-                "description": "Get List Book",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Book"
-                ],
-                "summary": "Get List Book",
-                "operationId": "get_list_book",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "offset",
-                        "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "limit",
-                        "name": "limit",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "GetBookListBody",
-                        "schema": {
-                            "$ref": "#/definitions/models.GetListBookResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid Argumant",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Server error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
             "post": {
-                "description": "Create Book",
+                "description": "CreateBook",
                 "consumes": [
                     "application/json"
                 ],
@@ -76,12 +28,12 @@ const docTemplate = `{
                 "tags": [
                     "Book"
                 ],
-                "summary": "Create Book",
-                "operationId": "create_book",
+                "summary": "CreateBook",
+                "operationId": "CreateBook",
                 "parameters": [
                     {
                         "description": "CreateBookRequestBody",
-                        "name": "category",
+                        "name": "book",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -113,7 +65,7 @@ const docTemplate = `{
         },
         "/book/{id}": {
             "get": {
-                "description": "Get By ID Book",
+                "description": "GetByID Book",
                 "consumes": [
                     "application/json"
                 ],
@@ -123,8 +75,8 @@ const docTemplate = `{
                 "tags": [
                     "Book"
                 ],
-                "summary": "Get By ID Book",
-                "operationId": "get_by_id_book",
+                "summary": "GetByID Book",
+                "operationId": "Get_By_IDBook",
                 "parameters": [
                     {
                         "type": "string",
@@ -135,105 +87,10 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "GetBookBody",
+                    "201": {
+                        "description": "GetByIDBookBody",
                         "schema": {
                             "$ref": "#/definitions/models.Book"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid Argumant",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Server error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Update Book",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Book"
-                ],
-                "summary": "Update Book",
-                "operationId": "update_book",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "UpdateBookRequestBody",
-                        "name": "category",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.UpdateBookSwag"
-                        }
-                    }
-                ],
-                "responses": {
-                    "202": {
-                        "description": "UpdateBookBody",
-                        "schema": {
-                            "$ref": "#/definitions/models.Book"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid Argumant",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Server error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Delete Book",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Book"
-                ],
-                "summary": "Delete Book",
-                "operationId": "delete_book",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "DeleteBookBody",
-                        "schema": {
-                            "$ref": "#/definitions/models.Empty"
                         }
                     },
                     "400": {
@@ -252,54 +109,6 @@ const docTemplate = `{
             }
         },
         "/category": {
-            "get": {
-                "description": "Get List Category",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Category"
-                ],
-                "summary": "Get List Category",
-                "operationId": "get_list_category",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "offset",
-                        "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "limit",
-                        "name": "limit",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "GetCategoryListBody",
-                        "schema": {
-                            "$ref": "#/definitions/models.GetListCategoryResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid Argumant",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Server error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
             "post": {
                 "description": "Create Category",
                 "consumes": [
@@ -389,101 +198,6 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
-            "put": {
-                "description": "Update Category",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Category"
-                ],
-                "summary": "Update Category",
-                "operationId": "update_category",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "UpdateCategoryRequestBody",
-                        "name": "category",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.UpdateCategorySwag"
-                        }
-                    }
-                ],
-                "responses": {
-                    "202": {
-                        "description": "UpdateCategoryBody",
-                        "schema": {
-                            "$ref": "#/definitions/models.Category"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid Argumant",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Server error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Delete Category",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Category"
-                ],
-                "summary": "Delete Category",
-                "operationId": "delete_category",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "DeleteCategoryBody",
-                        "schema": {
-                            "$ref": "#/definitions/models.Empty"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid Argumant",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Server error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
             }
         }
     },
@@ -491,6 +205,12 @@ const docTemplate = `{
         "models.Book": {
             "type": "object",
             "properties": {
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Category"
+                    }
+                },
                 "created_at": {
                     "type": "string"
                 },
@@ -514,10 +234,10 @@ const docTemplate = `{
         "models.Category": {
             "type": "object",
             "properties": {
-                "category_id": {
+                "created_at": {
                     "type": "string"
                 },
-                "created_at": {
+                "id": {
                     "type": "string"
                 },
                 "name": {
@@ -531,8 +251,11 @@ const docTemplate = `{
         "models.CreateBook": {
             "type": "object",
             "properties": {
-                "created_at": {
-                    "type": "string"
+                "category_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "description": {
                     "type": "string"
@@ -542,66 +265,10 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "number"
-                },
-                "updated_at": {
-                    "type": "string"
                 }
             }
         },
         "models.CreateCategory": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Empty": {
-            "type": "object"
-        },
-        "models.GetListBookResponse": {
-            "type": "object",
-            "properties": {
-                "books": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Book"
-                    }
-                },
-                "count": {
-                    "type": "integer"
-                }
-            }
-        },
-        "models.GetListCategoryResponse": {
-            "type": "object",
-            "properties": {
-                "categorys": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Category"
-                    }
-                },
-                "count": {
-                    "type": "integer"
-                }
-            }
-        },
-        "models.UpdateBookSwag": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "number"
-                }
-            }
-        },
-        "models.UpdateCategorySwag": {
             "type": "object",
             "properties": {
                 "name": {

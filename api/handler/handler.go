@@ -1,13 +1,15 @@
 package handler
 
-import "database/sql"
+import (
+	"github.com/ravshanbek-olimov/Golang-Monolit/storage"
+)
 
 type Handler struct {
-	db *sql.DB
+	storage storage.StorageI
 }
 
-func NewHandler(db *sql.DB) *Handler {
+func NewHandler(storage storage.StorageI) *Handler {
 	return &Handler{
-		db: db,
+		storage: storage,
 	}
 }

@@ -1,6 +1,10 @@
 definitions:
   models.Book:
     properties:
+      categories:
+        items:
+          $ref: '#/definitions/models.Category'
+        type: array
       created_at:
         type: string
       description:
@@ -16,9 +20,9 @@ definitions:
     type: object
   models.Category:
     properties:
-      category_id:
-        type: string
       created_at:
+        type: string
+      id:
         type: string
       name:
         type: string
@@ -27,52 +31,18 @@ definitions:
     type: object
   models.CreateBook:
     properties:
-      created_at:
-        type: string
+      category_ids:
+        items:
+          type: string
+        type: array
       description:
         type: string
       name:
         type: string
       price:
         type: number
-      updated_at:
-        type: string
     type: object
   models.CreateCategory:
-    properties:
-      name:
-        type: string
-    type: object
-  models.Empty:
-    type: object
-  models.GetListBookResponse:
-    properties:
-      books:
-        items:
-          $ref: '#/definitions/models.Book'
-        type: array
-      count:
-        type: integer
-    type: object
-  models.GetListCategoryResponse:
-    properties:
-      categorys:
-        items:
-          $ref: '#/definitions/models.Category'
-        type: array
-      count:
-        type: integer
-    type: object
-  models.UpdateBookSwag:
-    properties:
-      description:
-        type: string
-      name:
-        type: string
-      price:
-        type: number
-    type: object
-  models.UpdateCategorySwag:
     properties:
       name:
         type: string
@@ -81,47 +51,15 @@ info:
   contact: {}
 paths:
   /book:
-    get:
-      consumes:
-      - application/json
-      description: Get List Book
-      operationId: get_list_book
-      parameters:
-      - description: offset
-        in: query
-        name: offset
-        type: integer
-      - description: limit
-        in: query
-        name: limit
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: GetBookListBody
-          schema:
-            $ref: '#/definitions/models.GetListBookResponse'
-        "400":
-          description: Invalid Argumant
-          schema:
-            type: string
-        "500":
-          description: Server error
-          schema:
-            type: string
-      summary: Get List Book
-      tags:
-      - Book
     post:
       consumes:
       - application/json
-      description: Create Book
-      operationId: create_book
+      description: CreateBook
+      operationId: CreateBook
       parameters:
       - description: CreateBookRequestBody
         in: body
-        name: category
+        name: book
         required: true
         schema:
           $ref: '#/definitions/models.CreateBook'
@@ -140,44 +78,15 @@ paths:
           description: Server error
           schema:
             type: string
-      summary: Create Book
+      summary: CreateBook
       tags:
       - Book
   /book/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete Book
-      operationId: delete_book
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: DeleteBookBody
-          schema:
-            $ref: '#/definitions/models.Empty'
-        "400":
-          description: Invalid Argumant
-          schema:
-            type: string
-        "500":
-          description: Server error
-          schema:
-            type: string
-      summary: Delete Book
-      tags:
-      - Book
     get:
       consumes:
       - application/json
-      description: Get By ID Book
-      operationId: get_by_id_book
+      description: GetByID Book
+      operationId: Get_By_IDBook
       parameters:
       - description: id
         in: path
@@ -187,8 +96,8 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: GetBookBody
+        "201":
+          description: GetByIDBookBody
           schema:
             $ref: '#/definitions/models.Book'
         "400":
@@ -199,77 +108,10 @@ paths:
           description: Server error
           schema:
             type: string
-      summary: Get By ID Book
-      tags:
-      - Book
-    put:
-      consumes:
-      - application/json
-      description: Update Book
-      operationId: update_book
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: UpdateBookRequestBody
-        in: body
-        name: category
-        required: true
-        schema:
-          $ref: '#/definitions/models.UpdateBookSwag'
-      produces:
-      - application/json
-      responses:
-        "202":
-          description: UpdateBookBody
-          schema:
-            $ref: '#/definitions/models.Book'
-        "400":
-          description: Invalid Argumant
-          schema:
-            type: string
-        "500":
-          description: Server error
-          schema:
-            type: string
-      summary: Update Book
+      summary: GetByID Book
       tags:
       - Book
   /category:
-    get:
-      consumes:
-      - application/json
-      description: Get List Category
-      operationId: get_list_category
-      parameters:
-      - description: offset
-        in: query
-        name: offset
-        type: integer
-      - description: limit
-        in: query
-        name: limit
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: GetCategoryListBody
-          schema:
-            $ref: '#/definitions/models.GetListCategoryResponse'
-        "400":
-          description: Invalid Argumant
-          schema:
-            type: string
-        "500":
-          description: Server error
-          schema:
-            type: string
-      summary: Get List Category
-      tags:
-      - Category
     post:
       consumes:
       - application/json
@@ -301,35 +143,6 @@ paths:
       tags:
       - Category
   /category/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete Category
-      operationId: delete_category
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: DeleteCategoryBody
-          schema:
-            $ref: '#/definitions/models.Empty'
-        "400":
-          description: Invalid Argumant
-          schema:
-            type: string
-        "500":
-          description: Server error
-          schema:
-            type: string
-      summary: Delete Category
-      tags:
-      - Category
     get:
       consumes:
       - application/json
@@ -357,41 +170,6 @@ paths:
           schema:
             type: string
       summary: Get By ID Category
-      tags:
-      - Category
-    put:
-      consumes:
-      - application/json
-      description: Update Category
-      operationId: update_category
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: UpdateCategoryRequestBody
-        in: body
-        name: category
-        required: true
-        schema:
-          $ref: '#/definitions/models.UpdateCategorySwag'
-      produces:
-      - application/json
-      responses:
-        "202":
-          description: UpdateCategoryBody
-          schema:
-            $ref: '#/definitions/models.Category'
-        "400":
-          description: Invalid Argumant
-          schema:
-            type: string
-        "500":
-          description: Server error
-          schema:
-            type: string
-      summary: Update Category
       tags:
       - Category
 swagger: "2.0"
